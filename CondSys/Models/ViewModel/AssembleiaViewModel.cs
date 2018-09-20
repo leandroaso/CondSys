@@ -1,4 +1,4 @@
-﻿using CondSys.Models.Base;
+﻿using CondSys.Models.Entidades;
 
 namespace CondSys.Models.ViewModel
 {
