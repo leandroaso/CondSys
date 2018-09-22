@@ -7,7 +7,7 @@
 
 <section class="panel panel-default">
     <header class="panel-heading">
-        <button class="btn btn-xs btn-primary" data-toggle="modal" data-target="#myModal">Marcar assembleia</button>
+        <button class="btn btn-xs btn-primary" data-toggle="modal" data-target="#myModal" onclick="limparFormulario()">Marcar assembleia</button>
     </header>
 
     <div class="panel-body">
@@ -30,7 +30,7 @@
                         <td class="col-xs-4">@assembleia.Descricao</td>
                         <td class="col-xs-2">
                             <button class="btn btn-xs btn-warning" onclick="Edit(@JsonConvert.SerializeObject(assembleia))">Editar</button>
-                            <button class="btn btn-xs btn-danger">Cancelar</button>
+                            <button class="btn btn-xs btn-danger" onclick="Cacelar(@assembleia.Id)">Cancelar</button>
                         </td>
                     </tr>
                 }
@@ -41,6 +41,7 @@
 
 <script>
     function Edit(data) {
+        limparFormulario()
         var modal = $("#myModal");
         modal.find("#Assembleia_Id").val(data.Id);
         modal.find("#Assembleia_Data").val(data.Data);
@@ -50,7 +51,94 @@
         modal.modal('show');
     }
 
-    
+    function Cacelar(id) {
+        const swalWithBootstrapButtons = swal.mixin({
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false,
+        });
+
+        swalWithBootstrapButtons({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.value) {
+                console.log(id);
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Delete")",
+                    data: "id="+id,
+                    success: function (response) {
+                        if (response == "success") {
+                            location.reload();
+                        } else{
+                            swal(
+                                'Ops!',
+                                'ouvi um problema ao tentar cencelar a assembleia, tente novamente mais tarde!',
+                                'warning'
+                            ).then(() => {
+                                location.reload();
+                            });
+                        }
+                    },
+                    error: function(response) {
+                        swal(
+                            'Erro!',
+                            'ouvi um problema ao tentar cencelar a assembleia, tente novamente mais tarde!',
+                            'error'
+                        ).then(() => {
+                            location.reload();
+                        });
+                    }
+            
+                });
+            } 
+        });
+    }
+
+    function formSubmit() {
+
+        var form = $("#fomulario");
+
+        $.ajax({
+            type: "POST",
+            url: form.attr('action'),
+            data: form.serialize(),
+            success: function (response) {
+                if (response == "success") {
+                    location.reload();
+                } else{
+                    swal(
+                        'Ops!',
+                        'ouvi um problema ao tentar realizar o cadastro, verifique se os dados estão corretos',
+                        'warning'
+                    ).then(() => {
+                        location.reload();
+                    });
+                }
+            },
+            error: function(response) {
+                swal(
+                    'Erro!',
+                    'ouvi um problema ao tentar realizar o cadastro, verifique se os dados estão corretos',
+                    'error'
+                ).then(() => {
+                    location.reload();
+                });
+            }
+            
+        });
+    }
+
+    function limparFormulario() {
+        $('#fomulario input').val("");
+        $('#fomulario textarea').html("");
+    }
     // function para lipar os formularios
 </script>
 
@@ -61,7 +149,7 @@
 
         <!-- Modal content-->
         <div class="modal-content">
-            <form asp-action="Save" method="post">
+            <form asp-action="Save" method="post" id="fomulario">
                 @Html.HiddenFor(a => a.Assembleia.Id)
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -82,7 +170,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Salvar</button>
+                    <button type="button" class="btn btn-success" onclick="formSubmit()">Salvar</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                 </div>
             </form>

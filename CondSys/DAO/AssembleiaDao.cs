@@ -49,5 +49,6 @@ namespace CondSys.DAO
             var result = _context.Assembleia.SingleOrDefault(u => u.Id == id);
             return result;
         }
+
     }
 }
