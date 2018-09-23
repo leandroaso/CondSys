@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CondSys.DAO;
 using CondSys.Models.Entidades;
 using CondSys.Models.ViewModel;
+using CondSys.Negocio;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CondSys.Controllers
@@ -27,18 +28,35 @@ namespace CondSys.Controllers
 
         public IActionResult Save(AssembleiaViewModel assembleiaViewModel)
         {
-            if (ValidarAssembleia(assembleiaViewModel.Assembleia))
+            try
             {
-                if (assembleiaViewModel.Assembleia.Id > 0)
-                    AssembleiaDao.Update(assembleiaViewModel.Assembleia);
-                else
-                    AssembleiaDao.Save(assembleiaViewModel.Assembleia);
+                var assembleia = assembleiaViewModel.Assembleia;
+                
+                new AssembleiaNegocio(AssembleiaDao).SalvarAssembleia(assembleia);
 
                 assembleiaViewModel.Assembleias = AssembleiaDao.List();
 
-                return Ok("success");
+                return Json(new {Status = "OK", Message = "Cadastrado com Sucesso!" });
             }
-            return Ok();
+            catch(Exception ex)
+            {
+                return Json(new { Status = "NOK", Message = ex.Message});
+            }
+
+
+
+            //if (ValidarAssembleia(assembleiaViewModel.Assembleia))
+            //{
+            //    if (assembleiaViewModel.Assembleia.Id > 0)
+            //        AssembleiaDao.Update(assembleiaViewModel.Assembleia);
+            //    else
+            //        AssembleiaDao.Save(assembleiaViewModel.Assembleia);
+
+            //    assembleiaViewModel.Assembleias = AssembleiaDao.List();
+
+            //    return Ok("success");
+            //}
+            //return Ok();
         }
 
         public IActionResult Delete(int id)
@@ -51,10 +69,5 @@ namespace CondSys.Controllers
         }
 
 
-        private bool ValidarAssembleia(Assembleia assembleia)
-        {
-            // validar 
-            return true;
-        }
     }
 }

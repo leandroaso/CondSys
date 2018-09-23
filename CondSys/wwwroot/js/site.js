@@ -1,5 +1,5 @@
 ﻿
-$('.datetimepicker').mask('99/99/9999', { placeholder: "mm/dd/yyyy" });
+$('.datepicker').mask('99/99/9999', { placeholder: "mm/dd/yyyy" });
 
 function Edit(data) {
     limparFormulario()
@@ -40,7 +40,7 @@ function Cacelar(id, url) {
                     } else {
                         swal(
                             'Ops!',
-                            'ouvi um problema ao tentar cencelar a assembleia, tente novamente mais tarde!',
+                            'houve um problema ao tentar cencelar a assembleia, tente novamente mais tarde!',
                             'warning'
                         ).then(() => {
                             location.reload();
@@ -50,7 +50,7 @@ function Cacelar(id, url) {
                 error: function (response) {
                     swal(
                         'Erro!',
-                        'ouvi um problema ao tentar cencelar a assembleia, tente novamente mais tarde!',
+                        'houve um problema ao tentar cencelar a assembleia, tente novamente mais tarde!',
                         'error'
                     ).then(() => {
                         location.reload();
@@ -71,12 +71,12 @@ function formSubmit() {
         url: form.attr('action'),
         data: form.serialize(),
         success: function (response) {
-            if (response == "success") {
+            if (response == "OK") {
                 location.reload();
             } else {
                 swal(
                     'Ops!',
-                    'ouvi um problema ao tentar realizar o cadastro, verifique se os dados estão corretos',
+                    response.Message,
                     'warning'
                 ).then(() => {
                     location.reload();
@@ -86,7 +86,7 @@ function formSubmit() {
         error: function (response) {
             swal(
                 'Erro!',
-                'ouvi um problema ao tentar realizar o cadastro, verifique se os dados estão corretos',
+                'houve um problema ao tentar realizar o cadastro, verifique se os dados estão corretos',
                 'error'
             ).then(() => {
                 location.reload();

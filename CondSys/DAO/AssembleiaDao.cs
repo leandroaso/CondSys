@@ -17,9 +17,18 @@ namespace CondSys.DAO
 
         public Assembleia Save(Assembleia assembleia)
         {
-            var result = _context.Assembleia.Add(assembleia);
+            if (assembleia.Id > 0)
+            {
+                return this.Update(assembleia);
+            }
+            else
+            {
+                var result = _context.Assembleia.Add(assembleia);
             _context.SaveChanges();
             return result.Entity;
+            }
+
+            
         }
 
         public Assembleia Update(Assembleia assembleia)
