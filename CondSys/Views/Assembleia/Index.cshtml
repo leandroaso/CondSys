@@ -30,7 +30,7 @@
                         <td class="col-xs-4">@assembleia.Descricao</td>
                         <td class="col-xs-2">
                             <button class="btn btn-xs btn-warning" onclick="Edit(@JsonConvert.SerializeObject(assembleia))">Editar</button>
-                            <button class="btn btn-xs btn-danger" onclick="Cacelar(@assembleia.Id)">Cancelar</button>
+                            <button class="btn btn-xs btn-danger" action="@Url.Action("Delete")" onclick="Cacelar(@assembleia.Id, '@Url.Action("Delete")')">Cancelar</button>
                         </td>
                     </tr>
                 }
@@ -38,110 +38,6 @@
         </table>
     </div>
 </section>
-
-<script>
-    function Edit(data) {
-        limparFormulario()
-        var modal = $("#myModal");
-        modal.find("#Assembleia_Id").val(data.Id);
-        modal.find("#Assembleia_Data").val(data.Data);
-        modal.find("#Assembleia_Titulo").val(data.Titulo);
-        modal.find("#Assembleia_Descricao").html(data.Descricao);
-
-        modal.modal('show');
-    }
-
-    function Cacelar(id) {
-        const swalWithBootstrapButtons = swal.mixin({
-            confirmButtonClass: 'btn btn-success',
-            cancelButtonClass: 'btn btn-danger',
-            buttonsStyling: false,
-        });
-
-        swalWithBootstrapButtons({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, cancel!',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.value) {
-                console.log(id);
-                $.ajax({
-                    type: "POST",
-                    url: "@Url.Action("Delete")",
-                    data: "id="+id,
-                    success: function (response) {
-                        if (response == "success") {
-                            location.reload();
-                        } else{
-                            swal(
-                                'Ops!',
-                                'ouvi um problema ao tentar cencelar a assembleia, tente novamente mais tarde!',
-                                'warning'
-                            ).then(() => {
-                                location.reload();
-                            });
-                        }
-                    },
-                    error: function(response) {
-                        swal(
-                            'Erro!',
-                            'ouvi um problema ao tentar cencelar a assembleia, tente novamente mais tarde!',
-                            'error'
-                        ).then(() => {
-                            location.reload();
-                        });
-                    }
-            
-                });
-            } 
-        });
-    }
-
-    function formSubmit() {
-
-        var form = $("#fomulario");
-
-        $.ajax({
-            type: "POST",
-            url: form.attr('action'),
-            data: form.serialize(),
-            success: function (response) {
-                if (response == "success") {
-                    location.reload();
-                } else{
-                    swal(
-                        'Ops!',
-                        'ouvi um problema ao tentar realizar o cadastro, verifique se os dados estão corretos',
-                        'warning'
-                    ).then(() => {
-                        location.reload();
-                    });
-                }
-            },
-            error: function(response) {
-                swal(
-                    'Erro!',
-                    'ouvi um problema ao tentar realizar o cadastro, verifique se os dados estão corretos',
-                    'error'
-                ).then(() => {
-                    location.reload();
-                });
-            }
-            
-        });
-    }
-
-    function limparFormulario() {
-        $('#fomulario input').val("");
-        $('#fomulario textarea').html("");
-    }
-    // function para lipar os formularios
-</script>
-
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" role="dialog">
