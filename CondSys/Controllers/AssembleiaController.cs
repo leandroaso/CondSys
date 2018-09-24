@@ -40,7 +40,7 @@ namespace CondSys.Controllers
             }
             catch(Exception ex)
             {
-                return Json(new { Status = "NOK", Message = ex.Message});
+                return Json(new {Status = "NOK", Message = ex.Message.ToString() });
             }
 
 
