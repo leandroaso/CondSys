@@ -1,6 +1,10 @@
 ﻿
 //$('.datepicker').mask('99/99/9999', { placeholder: "mm/dd/yyyy" });
 
+$(document).ready(function () {
+    $(".datepicker").mask("99/99/9999");
+});
+
 function Edit(data) {
     limparFormulario()
     var modal = $("#myModal");
@@ -63,23 +67,34 @@ function Cacelar(id, url) {
 }
 
 function formSubmit() {
-
     var form = $("#fomulario");
 
-    if (form.find("#Assembleia_Data").val() == null || form.find("#Assembleia_Data").val() == undefined) {
+    if (form.find("#Assembleia_Data").val() == null ||
+        form.find("#Assembleia_Data").val() == "" ||
+        form.find("#Assembleia_Data").val() == undefined) {
         form.find(".validar-data").removeClass("hidden");
         form.find(".validar-data").html("Campo Data é obrigatório");
-        return;
+        return false;
+    } else {
+        form.find(".validar-data").addClass("hidden");
     }
-    if (form.find("#Assembleia_Titulo").val() == null || form.find("#Assembleia_Titulo").val() == undefined) {
+    if (form.find("#Assembleia_Titulo").val() == null ||
+        form.find("#Assembleia_Titulo").val() == "" ||
+        form.find("#Assembleia_Titulo").val() == undefined) {
         form.find(".validar-titulo").removeClass("hidden");
         form.find(".validar-titulo").html("Campo Titulo é obrigatório");
-        return;
+        return false;
+    } else {
+        form.find(".validar-titulo").addClass("hidden");
     }
-    if (form.find("#Assembleia_Descricao").val() == null || form.find("#Assembleia_Descricao").val() == undefined) {
+    if (form.find("#Assembleia_Descricao").val() == null ||
+        form.find("#Assembleia_Descricao").val() == "" ||
+        form.find("#Assembleia_Descricao").val() == undefined) {
         form.find(".validar-descricao").removeClass("hidden");
         form.find(".validar-descricao").html("Campo Descrição é obrigatório");
-        return;
+        return false;
+    } else {
+        form.find(".validar-descricao").addClass("hidden");
     }
 
     $.ajax({

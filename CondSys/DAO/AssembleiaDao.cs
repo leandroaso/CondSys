@@ -27,8 +27,6 @@ namespace CondSys.DAO
             _context.SaveChanges();
             return result.Entity;
             }
-
-            
         }
 
         public Assembleia Update(Assembleia assembleia)
@@ -51,7 +49,6 @@ namespace CondSys.DAO
             var lista = _context.Assembleia.ToList();
             return lista;
         }
-
 
         public Assembleia FindById(int id)
         {

@@ -55,18 +55,18 @@
                     <div class="form-group">
                         <label>Data</label>
                         @*<input type="date" class="form-control hasDatepicker" />*@
-                        @Html.TextBoxFor(a => a.Assembleia.Data, new { @class = "form-control datepicker" })
-                        <span class="validar-data hidden" ></span>
+                        @Html.TextBoxFor(a => a.Assembleia.Data, new { @class = "form-control datepicker", required ="required" })
+                        <span class="validar-data hidden text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label>Titulo</label>
-                        @Html.TextBoxFor(a => a.Assembleia.Titulo, new { @class = "form-control" })
-                        <span class="validar-titulo hidden" ></span>
+                        @Html.TextBoxFor(a => a.Assembleia.Titulo, new { @class = "form-control", required = "required" })
+                        <span class="validar-titulo hidden text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label>Descrição</label>
-                        @Html.TextAreaFor(a => a.Assembleia.Descricao, new { @class = "form-control" })
-                        <span class="validar-descricao hidden" ></span>
+                        @Html.TextAreaFor(a => a.Assembleia.Descricao, new { @class = "form-control",required = "required" })
+                        <span class="validar-descricao hidden text-danger"></span>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -78,4 +78,3 @@
 
     </div>
 </div>
-
