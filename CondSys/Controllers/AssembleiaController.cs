@@ -43,20 +43,6 @@ namespace CondSys.Controllers
                 return Json(new {Status = "NOK", Message = ex.Message.ToString() });
             }
 
-
-
-            //if (ValidarAssembleia(assembleiaViewModel.Assembleia))
-            //{
-            //    if (assembleiaViewModel.Assembleia.Id > 0)
-            //        AssembleiaDao.Update(assembleiaViewModel.Assembleia);
-            //    else
-            //        AssembleiaDao.Save(assembleiaViewModel.Assembleia);
-
-            //    assembleiaViewModel.Assembleias = AssembleiaDao.List();
-
-            //    return Ok("success");
-            //}
-            //return Ok();
         }
 
         public IActionResult Delete(int id)

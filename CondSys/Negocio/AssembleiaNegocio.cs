@@ -22,11 +22,14 @@ namespace CondSys.Negocio
             try
             {
                 var ultimaAssembleia = _dao.List().LastOrDefault();
-                var periodo = assembleia.Data - ultimaAssembleia.Data;
-
-                if(periodo.Days <= PRAZO_LIMITE_ASSEMBLEIA)
+                if (ultimaAssembleia != null)
                 {
-                    throw new Exception($"A assembleia só pode ser marcada em um prazo de {PRAZO_LIMITE_ASSEMBLEIA} dias");
+                    var periodo = assembleia.Data - ultimaAssembleia.Data;
+
+                    if(periodo.Days <= PRAZO_LIMITE_ASSEMBLEIA)
+                    {
+                        throw new Exception($"A assembleia só pode ser marcada em um prazo de {PRAZO_LIMITE_ASSEMBLEIA} dias");
+                    }
                 }
 
                 _dao.Save(assembleia);
