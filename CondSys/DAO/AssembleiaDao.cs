@@ -24,8 +24,8 @@ namespace CondSys.DAO
             else
             {
                 var result = _context.Assembleia.Add(assembleia);
-            _context.SaveChanges();
-            return result.Entity;
+                _context.SaveChanges();
+                return result.Entity;
             }
         }
 
@@ -54,6 +54,13 @@ namespace CondSys.DAO
         {
             var result = _context.Assembleia.SingleOrDefault(u => u.Id == id);
             return result;
+        }
+
+        public List<Assembleia> GetAssembleiasUltimosDias(Assembleia assembleia, int days)
+        {
+            return _context.Assembleia.Where(a => a.Data >= assembleia.Data 
+                                                  && a.Data <= assembleia.Data.AddDays(days) 
+                                                  && a.Id != assembleia.Id).ToList();
         }
 
     }
