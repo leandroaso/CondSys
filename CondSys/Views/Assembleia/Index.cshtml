@@ -29,7 +29,13 @@
                         <td class="col-xs-4">@assembleia.Titulo</td>
                         <td class="col-xs-4">@assembleia.Descricao</td>
                         <td class="col-xs-2">
-                            <button class="btn btn-xs btn-warning" onclick="Edit(@JsonConvert.SerializeObject(assembleia))">Editar</button>
+                            <button class="btn btn-xs btn-warning" onclick="Edit(@JsonConvert.SerializeObject(new
+                                                                            {
+                                                                                Id = assembleia.Id,
+                                                                                Data = assembleia.Data.ToString("dd/MM/yyyy"),
+                                                                                Titulo = assembleia.Titulo,
+                                                                                Descricao = assembleia.Descricao
+                                                                            }))">Editar</button>
                             <button class="btn btn-xs btn-danger" action="@Url.Action("Delete")" onclick="Cacelar(@assembleia.Id, '@Url.Action("Delete")')">Cancelar</button>
                         </td>
                     </tr>
