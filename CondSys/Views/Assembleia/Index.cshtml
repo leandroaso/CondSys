@@ -1,0 +1,86 @@
+﻿@using Microsoft.AspNetCore.Razor.Language.Intermediate
+@using Newtonsoft.Json
+@model AssembleiaViewModel
+@{
+    ViewData["Title"] = "Gerenciar assembleias";
+}
+
+<section class="panel panel-default">
+    <header class="panel-heading">
+        <button class="btn btn-xs btn-primary" data-toggle="modal" data-target="#myModal" onclick="limparFormulario()">Marcar assembleia</button>
+    </header>
+
+    <div class="panel-body">
+        <h3>Lista de assembleias </h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td class="col-xs-2">Data</td>
+                    <td class="col-xs-4">Titulo</td>
+                    <td class="col-xs-4">Descrição</td>
+                    <td class="col-xs-2">Ações</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var assembleia in Model.Assembleias)
+                {
+                    <tr>
+                        <td class="col-xs-2">@assembleia.Data.ToString("dd/MM/yyyy")</td>
+                        <td class="col-xs-4">@assembleia.Titulo</td>
+                        <td class="col-xs-4">@assembleia.Descricao</td>
+                        <td class="col-xs-2">
+                            <button class="btn btn-xs btn-warning" onclick="Edit(@JsonConvert.SerializeObject(new
+                                                                            {
+                                                                                Id = assembleia.Id,
+                                                                                Data = assembleia.Data.ToString("dd/MM/yyyy"),
+                                                                                Titulo = assembleia.Titulo,
+                                                                                Descricao = assembleia.Descricao
+                                                                            }))">Editar</button>
+                            <button class="btn btn-xs btn-danger" action="@Url.Action("Delete")" onclick="Cacelar(@assembleia.Id, '@Url.Action("Delete")')">Cancelar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <form asp-action="Save" method="post" id="fomulario">
+                @Html.HiddenFor(a => a.Assembleia.Id)
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Data</label>
+                        @*<input type="date" class="form-control hasDatepicker" />*@
+                        @Html.TextBoxFor(a => a.Assembleia.Data, new { @class = "form-control datepicker", required ="required" })
+                        <span class="validar-data hidden text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Titulo</label>
+                        @Html.TextBoxFor(a => a.Assembleia.Titulo, new { @class = "form-control", required = "required" })
+                        <span class="validar-titulo hidden text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Descrição</label>
+                        @Html.TextAreaFor(a => a.Assembleia.Descricao, new { @class = "form-control",required = "required" })
+                        <span class="validar-descricao hidden text-danger"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="formSubmit()">Salvar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
