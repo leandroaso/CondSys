@@ -1,7 +1,4 @@
-﻿
-//$('.datepicker').mask('99/99/9999', { placeholder: "mm/dd/yyyy" });
-
-$(document).ready(function () {
+﻿$(document).ready(function () {
     $(".datepicker").mask("99/99/9999");
 });
 
