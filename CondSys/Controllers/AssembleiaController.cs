@@ -21,6 +21,9 @@ namespace CondSys.Controllers
         }
         public IActionResult Index()
         {
+            if (UsuarioLogado.Usuario == null)
+                return RedirectToAction("index", "Login");
+
             var assemblea = new AssembleiaViewModel();
             assemblea.Assembleias = AssembleiaDao.List();
             return View(assemblea);
@@ -31,9 +34,7 @@ namespace CondSys.Controllers
             try
             {
                 var assembleia = assembleiaViewModel.Assembleia;
-                
                 new AssembleiaNegocio(AssembleiaDao).SalvarAssembleia(assembleia);
-
                 assembleiaViewModel.Assembleias = AssembleiaDao.List();
 
                 return Json(new {Status = "OK", Message = "Cadastrado com Sucesso!" });
@@ -42,7 +43,6 @@ namespace CondSys.Controllers
             {
                 return Json(new {Status = "NOK", Message = ex.Message.ToString() });
             }
-
         }
 
         public IActionResult Delete(int id)
